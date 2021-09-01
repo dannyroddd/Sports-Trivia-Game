@@ -34,7 +34,17 @@ const $reset = $('#reset')
 const $button = $('#button')
 
 //Game board functions
-//1. grab a random question
+
+const answer = (event, question) => {
+
+if(event.target.innerText === question.correctAnswer){
+  console.log('right')
+} else {
+  console.log('wrong')
+}
+} 
+
+// grab a random question
 const gameBoard = (field) => {
   const randomQ = Math.floor(Math.random() * field.length)
   const grabQuestion = field[randomQ]
@@ -47,5 +57,10 @@ const gameBoard = (field) => {
 
   $p1score.text(game.p1)
   $p2score.text(game.p2)
+
+$('li').on('click', (event)=>{answer(event, grabQuestion)})
+  // $b.on('click', (event)=>{answer(event, grabQuestion)})
+  // $c.on('click', (event)=>{answer(event, grabQuestion)})
+  // $d.on('click', (event)=>{answer(event, grabQuestion)})
 }
-    
+ 
