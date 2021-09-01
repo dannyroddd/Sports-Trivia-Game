@@ -11,9 +11,10 @@ $.ajax(url)
 })
 //game state
 const game = {
-    p1: 0,
-    p2: 0,
-    question:{} 
+    p1: 0, 
+    p2: 0, 
+    question:{},
+    answerChosen: true
     }
 
     let trivia = []
@@ -32,17 +33,53 @@ const $p2 = $('#p2')
 const $p2score = $('#p2score')
 const $reset = $('#reset')
 const $button = $('#button')
+const $turns = $('#turns')
+// const $turn1 = $('#turn1')
+// const $turn2 = $('#turn1')
 
 //Game board functions
 
 const answer = (event, question) => {
 
 if(event.target.innerText === question.correctAnswer){
-  console.log('right')
-} else {
-  console.log('wrong')
-}
+
+  if(game.answerChosen){
+    $turns.text('PLAYER TWO TURN')
+    game.p1 ++
+    game.answerChosen = !game.answerChosen
+  } else {
+    $turns.text('PLAYER ONE TURN')
+    game.p2 ++
+    game.answerChosen = !game.answerChosen
+  } 
+  gameBoard(trivia)
+} else{ 
+  gameBoard(trivia)
+  game.answerChosen = !game.answerChosen
 } 
+
+} 
+
+const wrongAnswer = (event, question) => {
+
+  if(event.target.innerText !== question.correctAnswer){
+  
+    if(game.answerChosen){
+      $turns.text('PLAYER TWO TURN')
+      game.p1 += 0
+      game.answerChosen = !game.answerChosen
+    } else {
+      $turns.text('PLAYER ONE TURN')
+      game.p2 += 0
+      game.answerChosen = !game.answerChosen
+    } 
+    gameBoard(trivia)
+  } else{ 
+    gameBoard(trivia)
+    game.answerChosen = !game.answerChosen
+  } 
+}
+
 
 // grab a random question
 const gameBoard = (field) => {
@@ -58,9 +95,13 @@ const gameBoard = (field) => {
   $p1score.text(game.p1)
   $p2score.text(game.p2)
 
+
+
+
+$('li').off()
 $('li').on('click', (event)=>{answer(event, grabQuestion)})
-  // $b.on('click', (event)=>{answer(event, grabQuestion)})
-  // $c.on('click', (event)=>{answer(event, grabQuestion)})
-  // $d.on('click', (event)=>{answer(event, grabQuestion)})
+
+
+$('li').on('click', (event)=>{wrongAnswer(event, grabQuestion)})
 }
  
