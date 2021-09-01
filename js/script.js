@@ -6,8 +6,9 @@ $.ajax(url)
    trivia = data.items.map((field) => field.fields)
    console.log(data)
    console.log(trivia)
-})
 
+   gameBoard(trivia)
+})
 //game state
 const game = {
     p1: 0,
@@ -38,7 +39,7 @@ const gameBoard = (field) => {
   const randomQ = Math.floor(Math.random() * field.length)
   const grabQuestion = field[randomQ]
 
-  $question.text() = grabQuestion.question
+  $question.text(grabQuestion.question)
   $a.text(grabQuestion.a)
   $b.text(grabQuestion.b) 
   $c.text(grabQuestion.c) 
