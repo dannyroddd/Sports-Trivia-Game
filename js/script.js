@@ -9,6 +9,9 @@ $.ajax(url)
 
    gameBoard(trivia)
 })
+//created a turn system
+let turn = 0;
+
 //game state
 const game = {
     p1: 0, 
@@ -37,52 +40,105 @@ const $turns = $('#turns')
 // const $turn1 = $('#turn1')
 // const $turn2 = $('#turn1')
 
+
+
 //Game board functions
 
-const answer = (event, question) => {
+// Combined right answer and wrong answer functions into one function
+const answerChecker = (event, question) => {
+console.log(question.correctAnswer)
+console.log(event.target.innerText)
+console.log(event.target.innerText === question.correctAnswer)
+//used modulo to toggle between player one's turn and player two's turn  
+if(game.answerChosen){
+    if(turn % 2 === 0){
+      $turns.text("PLAYER TWO TURN")
+    }
+    else{
+      $turns.text("PLAYER ONE TURN")
+    }
+    
+    console.log("inside first if ")
+    //used trim to remove any extra white spaces in the questions I created in contentful. I accidentally added white spaces after some answers and certain questions would break the game. Looked up how to use trim()
 
-if(event.target.innerText === question.correctAnswer){
+    //if answer clicked is correct on each players turn give them a point
+    if(event.target.innerText.trim() == question.correctAnswer.trim()){
+      console.log("second if")
+      if(turn % 2 === 0){
+        console.log("player ones point")
+         // player 1 turn
+        game.p1 ++
+        console.log( game.p1)
+       
+      
+      }else{
+        console.log("player 2s point")
+        // player 2 turn
+        $turns.text('PLAYER ONE TURN')
+        game.p2++
+        console.log(game.p2)
+        
+      }
+      
 
-  if(game.answerChosen){
-    $turns.text('PLAYER TWO TURN')
-    game.p1 ++
-    game.answerChosen = !game.answerChosen
-  } else {
-    $turns.text('PLAYER ONE TURN')
-    game.p2 ++
-    game.answerChosen = !game.answerChosen
-  } 
-  gameBoard(trivia)
-} else{ 
-  gameBoard(trivia)
-  game.answerChosen = !game.answerChosen
-} 
-
-} 
-
-const wrongAnswer = (event, question) => {
-
-  if(event.target.innerText !== question.correctAnswer){
+    }
+   
+    turn ++
+    gameBoard(trivia)
+  }
+ 
   
-    if(game.answerChosen){
-      $turns.text('PLAYER TWO TURN')
-      game.p1 += 0
-      game.answerChosen = !game.answerChosen
-    } else {
-      $turns.text('PLAYER ONE TURN')
-      game.p2 += 0
-      game.answerChosen = !game.answerChosen
-    } 
-    gameBoard(trivia)
-  } else{ 
-    gameBoard(trivia)
-    game.answerChosen = !game.answerChosen
-  } 
+  
 }
 
+// right answer function
+// const answer = (event, question) => {
 
-// grab a random question
+// if(event.target.innerText === question.correctAnswer){
+
+//   if(game.answerChosen){
+//     $turns.text('PLAYER TWO TURN')
+//     game.p1 ++
+//     game.answerChosen = !game.answerChosen
+//   } else {
+//     $turns.text('PLAYER ONE TURN')
+//     game.p2 ++
+//     game.answerChosen = !game.answerChosen
+//   } 
+//   gameBoard(trivia)
+// } else{ 
+//   gameBoard(trivia)
+//   game.answerChosen = !game.answerChosen
+// } 
+
+// } 
+
+//wrong answer function
+// const wrongAnswer = (event, question) => {
+
+//   if(event.target.innerText !== question.correctAnswer){
+//   console.log(question.correctAnswer);
+//   console.log(event.target.innerText)
+//     if(game.answerChosen){
+//       $turns.text('PLAYER TWO TURN')
+//       game.p1 += 0
+//       game.answerChosen = !game.answerChosen
+//     } else {
+//       $turns.text('PLAYER ONE TURN')
+//       game.p2 += 0
+//       game.answerChosen = !game.answerChosen
+//     } 
+//     gameBoard(trivia)
+//   } else{ 
+//     gameBoard(trivia)
+//     game.answerChosen = !game.answerChosen
+//   } 
+// }
+
+
+// grab a random question and set the game board 
 const gameBoard = (field) => {
+ 
   const randomQ = Math.floor(Math.random() * field.length)
   const grabQuestion = field[randomQ]
 
@@ -99,9 +155,9 @@ const gameBoard = (field) => {
 
 
 $('li').off()
-$('li').on('click', (event)=>{answer(event, grabQuestion)})
+$('li').on('click', (event)=>{answerChecker(event, grabQuestion)})
 
 
-$('li').on('click', (event)=>{wrongAnswer(event, grabQuestion)})
+//$('li').on('click', (event)=>{wrongAnswer(event, grabQuestion)})
 }
  
