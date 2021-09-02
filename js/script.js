@@ -41,6 +41,9 @@ const $turns = $('#turns')
 // const $turn2 = $('#turn1')
 
 
+$turns.text('READY TO PLAY')
+
+
 
 //Game board functions
 
@@ -89,6 +92,12 @@ if(game.answerChosen){
  
   
   
+}
+
+const resetBoard = (event) =>{
+  $p1score.text(game.p1 = 0)
+  $p2score.text(game.p2 = 0)
+  $turns.text('GAME RESET - PLAY AGAIN?')
 }
 
 // right answer function
@@ -156,7 +165,7 @@ const gameBoard = (field) => {
 
 $('li').off()
 $('li').on('click', (event)=>{answerChecker(event, grabQuestion)})
-
+$button.on('click', (event)=>{resetBoard(event, grabQuestion)})
 
 //$('li').on('click', (event)=>{wrongAnswer(event, grabQuestion)})
 }
