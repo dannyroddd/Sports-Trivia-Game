@@ -37,6 +37,7 @@ const $p2score = $('#p2score')
 const $reset = $('#reset')
 const $button = $('#button')
 const $turns = $('#turns')
+const $winner= $('#winner')
 // const $turn1 = $('#turn1')
 // const $turn2 = $('#turn1')
 
@@ -49,38 +50,30 @@ $turns.text('READY TO PLAY')
 
 // Combined right answer and wrong answer functions into one function
 const answerChecker = (event, question) => {
-console.log(question.correctAnswer)
-console.log(event.target.innerText)
-console.log(event.target.innerText === question.correctAnswer)
+
 //used modulo to toggle between player one's turn and player two's turn  
 if(game.answerChosen){
     if(turn % 2 === 0){
+      $winner.text(' ')
       $turns.text("PLAYER TWO TURN")
     }
     else{
+      $winner.text(' ')
       $turns.text("PLAYER ONE TURN")
     }
     
-    console.log("inside first if ")
     //used trim to remove any extra white spaces in the questions I created in contentful. I accidentally added white spaces after some answers and certain questions would break the game. Looked up how to use trim()
 
     //if answer clicked is correct on each players turn give them a point
     if(event.target.innerText.trim() == question.correctAnswer.trim()){
-      console.log("second if")
+      
       if(turn % 2 === 0){
-        console.log("player ones point")
          // player 1 turn
         game.p1 ++
-        console.log( game.p1)
-       
-      
-      }else{
-        console.log("player 2s point")
+        }else{
         // player 2 turn
         $turns.text('PLAYER ONE TURN')
-        game.p2++
-        console.log(game.p2)
-        
+        game.p2++        
       }
       
 
@@ -97,53 +90,18 @@ if(game.answerChosen){
 const resetBoard = (event) =>{
   $p1score.text(game.p1 = 0)
   $p2score.text(game.p2 = 0)
-  $turns.text('GAME RESET - PLAY AGAIN?')
+  $turns.text('GAME RESET - PLAY AGAIN? - PLAYER ONE TURN')
+  turn = 0
 }
 
-// right answer function
-// const answer = (event, question) => {
-
-// if(event.target.innerText === question.correctAnswer){
-
-//   if(game.answerChosen){
-//     $turns.text('PLAYER TWO TURN')
-//     game.p1 ++
-//     game.answerChosen = !game.answerChosen
-//   } else {
-//     $turns.text('PLAYER ONE TURN')
-//     game.p2 ++
-//     game.answerChosen = !game.answerChosen
-//   } 
-//   gameBoard(trivia)
-// } else{ 
-//   gameBoard(trivia)
-//   game.answerChosen = !game.answerChosen
-// } 
-
-// } 
-
-//wrong answer function
-// const wrongAnswer = (event, question) => {
-
-//   if(event.target.innerText !== question.correctAnswer){
-//   console.log(question.correctAnswer);
-//   console.log(event.target.innerText)
-//     if(game.answerChosen){
-//       $turns.text('PLAYER TWO TURN')
-//       game.p1 += 0
-//       game.answerChosen = !game.answerChosen
-//     } else {
-//       $turns.text('PLAYER ONE TURN')
-//       game.p2 += 0
-//       game.answerChosen = !game.answerChosen
-//     } 
-//     gameBoard(trivia)
-//   } else{ 
-//     gameBoard(trivia)
-//     game.answerChosen = !game.answerChosen
-//   } 
-// }
-
+const winner =(event) =>{if(game.p1 === 3){
+  resetBoard()
+  $winner.text('PlAYER ONE WINS')
+} if(game.p2 === 3){
+  resetBoard()
+  $winner.text('PlAYER TWO WINS')
+} 
+}
 
 // grab a random question and set the game board 
 const gameBoard = (field) => {
@@ -160,13 +118,15 @@ const gameBoard = (field) => {
   $p1score.text(game.p1)
   $p2score.text(game.p2)
 
+  
+ 
 
-
+winner()
 
 $('li').off()
 $('li').on('click', (event)=>{answerChecker(event, grabQuestion)})
 $button.on('click', (event)=>{resetBoard(event, grabQuestion)})
-
-//$('li').on('click', (event)=>{wrongAnswer(event, grabQuestion)})
 }
+
+
  
