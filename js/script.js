@@ -38,11 +38,9 @@ const $reset = $('#reset')
 const $button = $('#button')
 const $turns = $('#turns')
 const $winner= $('#winner')
-// const $turn1 = $('#turn1')
-// const $turn2 = $('#turn1')
 
 
-$turns.text('READY TO PLAY')
+$turns.text('READY TO PLAY - 15 POINTS TO WIN')
 
 
 
@@ -94,12 +92,12 @@ const resetBoard = (event) =>{
   turn = 0
 }
 
-const winner =(event) =>{if(game.p1 === 3){
+const winner =(event) =>{if(game.p1 === 15){
   resetBoard()
-  $winner.text('PlAYER ONE WINS')
-} if(game.p2 === 3){
+  $winner.text('PLAYER ONE WINS')
+} if(game.p2 === 15){
   resetBoard()
-  $winner.text('PlAYER TWO WINS')
+  $winner.text('PLAYER TWO WINS')
 } 
 }
 
@@ -128,5 +126,6 @@ $('li').on('click', (event)=>{answerChecker(event, grabQuestion)})
 $button.on('click', (event)=>{resetBoard(event, grabQuestion)})
 }
 
+console.log(game.p1)
 
  
